@@ -1,0 +1,94 @@
+package com.chaithu;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class CupStack {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(System.in));
+
+        List<Cup> cups = new ArrayList<>();
+        int numberOfCups = Integer.parseInt(bufferedReader.readLine());
+
+        for (int idx = 0; idx < numberOfCups; idx++) {
+            String[] info = bufferedReader.readLine().split(" ");
+            Cup cup = new Cup();
+
+            if (isNumber(info[0])) {
+                cup.radius = Integer.parseInt(info[0]) / 2;
+                cup.color = info[1];
+            } else {
+                cup.radius = Integer.parseInt(info[1]);
+                cup.color = info[0];
+            }
+            cups.add(cup);
+        }
+
+        cups.stream()
+                .sorted(Comparator.comparing(Cup::getRadius))
+                .forEach(cup -> System.out.println(cup.color));
+    }
+
+    private static boolean isNumber(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    static class Cup {
+        private int radius;
+        private String color;
+
+        int getRadius() {
+            return radius;
+        }
+    }
+}
+
+
+package com.chaithu;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class NamesSorter {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(System.in));
+
+        List<String> allNames = new ArrayList<>();
+        while (true) {
+            int numberOfNames = Integer.parseInt(bufferedReader.readLine());
+
+            if (numberOfNames != 0) {
+                List<String> names = new ArrayList<>();
+                for (int i = 0; i < numberOfNames; i++) {
+                    names.add(bufferedReader.readLine());
+                }
+
+                List<String> sortedNames = names.stream().sorted(Comparator.comparing(s -> s.substring(0, 2)))
+                        .collect(Collectors.toList());
+                allNames.addAll(sortedNames);
+                allNames.add("");
+            } else {
+                break;
+            }
+        }
+        allNames.forEach(System.out::println);
+    }
+}
